@@ -49,7 +49,7 @@ public class Controller {
 
         Optional<Student> student = studentRepo.findById(id);
         if (student.isEmpty())
-            throw new RuntimeException("No Cusotmer found");
+            throw new RuntimeException("No Cusotmer found check git changes");
             studentRepo.delete(student.get());
 
         return " student deleted:"+id;
