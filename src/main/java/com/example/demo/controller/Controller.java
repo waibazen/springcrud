@@ -71,7 +71,7 @@ public class Controller {
         Optional<Student> studentOptional = studentRepo.findById(id);
 
         if (studentOptional.isEmpty())
-            throw new RuntimeException("No Employee found in git ");
+            throw new RuntimeException("No Employee found in git stagecrud");
 
 
         return studentRepo.save(student);
