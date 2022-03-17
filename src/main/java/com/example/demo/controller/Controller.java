@@ -30,7 +30,7 @@ public class Controller {
 
         Optional<Student> student= studentRepo.findById(id);//method ko return type optional rakham for nullcheck
         if (student.isEmpty())
-            throw new RuntimeException("No Cusotmer git  found");//not working
+            throw new RuntimeException("No Cusotmer git  found  ok ");//not working
 
         return student.get();
     }
