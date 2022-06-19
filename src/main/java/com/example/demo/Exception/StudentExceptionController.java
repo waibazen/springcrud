@@ -23,14 +23,20 @@ public class StudentExceptionController extends ResponseEntityExceptionHandler{
     @Override
     protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
-        // TODO Auto-generated method stub
-        //return super.handleHttpRequestMethodNotSupported(ex, headers, status, request);
+       
         return new ResponseEntity<Object>("Method not supported", HttpStatus.METHOD_NOT_ALLOWED);
     }
      @ExceptionHandler(NoSuchFieldError.class)
     public ResponseEntity<String> handleNoSuchFieldError(NoSuchFieldError ex) {
         
               return new ResponseEntity<String>("no such Field found ", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NumberFormatException.class )
+    public ResponseEntity<String> handleNumberFormatException(NumberFormatException ex) {
+        
+              return new ResponseEntity<String>("Number format exception", HttpStatus.NOT_FOUND);
+       
     }
 }
     
