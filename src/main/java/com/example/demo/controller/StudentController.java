@@ -5,7 +5,7 @@ import com.example.demo.Exception.NoStudentFoundException;
 //import com.example.demo.Exception.userNotFoundException;
 import com.example.demo.model.Student;
 import com.example.demo.repository.StudentRepo;
-import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.databind.ObjectMapper;
 
 //import org.hibernate.annotations.common.util.impl.LoggerFactory;
 import org.slf4j.Logger;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 //import java.util.Optional;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 // javax.servlet.http.HttpServletResponse;
 
@@ -30,7 +31,7 @@ public class StudentController {
 
     //private static final String STUDENT_NOT_FOUND = "Student not found";
     private static final Logger LOG = LoggerFactory.getLogger(StudentController.class);
-    private static final ObjectMapper mapper = new ObjectMapper();
+    //private static final ObjectMapper mapper = new ObjectMapper();
 
 
     @Autowired
@@ -42,35 +43,54 @@ public class StudentController {
         return "<h1>welcome to the Student Portal</h1>";
     }
     @GetMapping("/students")
-    public List<Student> getAllStudents() {
+    public List<Student> getAllStudents() throws Exception {
         LOG.info("getAllStudents()");
-        return studentRepo.findAll();
+        try{
+           List<Student>studentList= studentRepo.findAll();
+           return studentList;
+        }
+        catch(Exception e){
+            throw new NoStudentFoundException("4005","No students found");
+        }
     }
     @GetMapping("/student/{id}")
-    public Student getStudentById(@PathVariable("id") Long id) {
+    public Student getStudentById(@PathVariable("id") Long id) throws Exception  {
         LOG.info("getStudentById():"+id+"(+)");
         
-     try{
-         Student  student= studentRepo.findById(id).get();
-         return student;
-         
-     }   
-    //method ko return type optional rakham for nullcheck
-    
+            try{
+               
+ //if(studentRepo.findById(id).isPresent()) {
+                
+    Student student= studentRepo.findById(id).orElseThrow(() -> new NoSuchElementException("Student not found"));
 
+    return student;      
+                
+   //         }
+        }
+                
+                     
+                 
+                 
+            
     catch(NoSuchElementException ex){//catch block takes precedence over controller advice
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found");
+        //throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found");
+        throw new NoSuchElementException(ex.getMessage());
             
         }
 
         catch(Exception ex){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error");
         }
-        finally{
-            LOG.info("getStudentById():"+id+"(-)");
-        }
+          
+      
+
         
-    }
+    
+
+ }  
+  
+        
+    
 
 
 
@@ -125,11 +145,10 @@ public class StudentController {
        
         
        }
-         catch(NoStudentFoundException e){
-              throw new ResponseStatusException( HttpStatus.NOT_FOUND,  "not found",e.getCause());
-         }
+         catch(IllegalArgumentException ex){
+              throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Entity not found");}
          catch(Exception e){
-              throw new ResponseStatusException( HttpStatus.INTERNAL_SERVER_ERROR,  "Internal Server Error brought to you buy",e.getCause());
+              throw new ResponseStatusException( HttpStatus.NOT_FOUND,  "Internal Server Error brought to you buy",e.getCause());
          }  
             finally{
                 LOG.info("updateStudent():"+id+"(-)");
