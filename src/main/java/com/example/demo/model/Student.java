@@ -15,6 +15,22 @@ public class Student {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
+    public Student(String firstName, String lastName, String email, String address) {
+        this.firstName = firstName;
+        LastName = lastName;
+        this.email = email;
+        Address = address;
+    }
+    public Student(long id, String firstName, String lastName, String email, String address) {
+        this.id = id;
+        this.firstName = firstName;
+        LastName = lastName;
+        this.email = email;
+        Address = address;
+    }
+    public Student(){
+        
+    }
     private String firstName;
     private String LastName;
     private String email;
