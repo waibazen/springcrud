@@ -40,7 +40,7 @@ public class StudentController {
     
     @GetMapping("/")
     public String  home() {
-        return "<h1>welcome to the Student Portal</h1>";
+        return "<h1>welcome to the Student Portal brother</h1>";
     }
     @GetMapping("/students")
     public List<Student> getAllStudents() throws Exception {
